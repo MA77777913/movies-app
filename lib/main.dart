@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:movies_app/core/utils/app_route.dart';
+import 'package:movies_app/features/auth/presentation/screes/login_screen.dart';
+import 'package:movies_app/features/auth/presentation/screes/register_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -7,12 +10,16 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      title: 'movies app',
+      initialRoute: AppRoute.loginRoute,
+      routes: {
+        AppRoute.loginRoute: (context) => const LoginScreen(),
+        AppRoute.registerRoute: (context) => const RegisterScreen(),
+      },
     );
   }
 }
-
