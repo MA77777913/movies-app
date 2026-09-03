@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movies_app/core/utils/app_color.dart';
+import '../../../../core/utils/app_route.dart';
 import '../cubit/onboarding_cubit.dart';
 import '../cubit/onboarding_state.dart';
 import '../widgets/onboarding_page_widget.dart';
@@ -33,6 +35,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       builder: (context, state) {
         final cubit = context.read<OnboardingCubit>();
         return Scaffold(
+          backgroundColor: AppColor.black,
           body: PageView.builder(
             controller: _pageController,
             physics: const NeverScrollableScrollPhysics(), // buttons drive navigation, not swipes
@@ -44,7 +47,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 onBackPressed: model.showBackButton ? cubit.previousPage : null,
                 onPrimaryPressed: () {
                   if (cubit.isLastPage) {
-                    // TODO: navigate wherever onboarding should lead (e.g. login screen)
+                    Navigator.pushReplacementNamed(context, AppRoute.loginRoute);
                   } else {
                     cubit.nextPage();
                   }
