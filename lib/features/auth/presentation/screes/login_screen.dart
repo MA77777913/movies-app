@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:movies_app/core/utils/app_assets.dart';
 import 'package:movies_app/core/utils/app_color.dart';
 import 'package:movies_app/core/utils/app_route.dart';
-import 'package:movies_app/features/auth/presentation/widgets/custom_button.dart';
-import 'package:movies_app/features/auth/presentation/widgets/custom_text_field.dart';
+import 'package:movies_app/features/auth/presentation/widgets/login_widgets/custom_button.dart';
+import 'package:movies_app/features/auth/presentation/widgets/login_widgets/custom_text_field.dart';
 import 'package:movies_app/features/auth/presentation/widgets/language_switcher.dart';
 import 'package:movies_app/features/auth/presentation/widgets/social_login_button.dart';
 
@@ -40,12 +40,17 @@ class LoginScreen extends StatelessWidget {
                     isPassword: true,
                   ),
                   const SizedBox(height: 10),
-                  const Align(
+                  Align(
                     alignment: Alignment.centerRight,
-                    child: Text(
-                      "Forget Password ?",
-                      style: TextStyle(
-                          color: AppColor.yellow, fontWeight: FontWeight.bold),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, AppRoute.forgetPasswordRoute);
+                      },
+                      child: const Text(
+                        "Forget Password ?",
+                        style: TextStyle(
+                            color: AppColor.yellow, fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 30),
@@ -75,23 +80,28 @@ class LoginScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 30),
                   const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Expanded(
-                          child: Divider(
-                        color: AppColor.yellow,
-                        thickness: 1,
-                        endIndent: 10,
-                      )),
+                      SizedBox(
+                        width: 92.96,
+                        child: Divider(
+                          color: AppColor.yellow,
+                          thickness: 1.12,
+                          endIndent: 10,
+                        ),
+                      ),
                       Text(
                         "OR",
                         style: TextStyle(color: AppColor.yellow),
                       ),
-                      Expanded(
-                          child: Divider(
-                        color: AppColor.yellow,
-                        thickness: 1,
-                        indent: 10,
-                      )),
+                      SizedBox(
+                        width: 92.96,
+                        child: Divider(
+                          color: AppColor.yellow,
+                          thickness: 1.12,
+                          indent: 10,
+                        ),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 30),
