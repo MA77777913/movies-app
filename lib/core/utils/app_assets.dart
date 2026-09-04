@@ -1,5 +1,6 @@
 class AppAssets {
   static const String loginImage = "assets/image/login_image.png";
+  static const String forgotPasswordImage = "assets/image/Forgot-password.png";
   static const String avatar1 = "assets/image/g.png";
   static const String avatar2 = "assets/image/gamer (1).png";
   static const String avatar3 = "assets/image/avatar3.png";

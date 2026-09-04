@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:movies_app/core/utils/app_color.dart';
-import 'package:movies_app/core/utils/app_text_style.dart';
 import 'package:movies_app/features/auth/presentation/widgets/custom_button.dart';
 import 'package:movies_app/features/auth/presentation/widgets/custom_text_field.dart';
 import 'package:movies_app/features/auth/presentation/widgets/language_switcher.dart';
@@ -20,9 +19,9 @@ class RegisterScreen extends StatelessWidget {
           icon: const Icon(Icons.arrow_back, color: AppColor.yellow),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text(
+        title: const Text(
           "Register",
-          style: AppTextStyle.appBarTxtStyle,
+          style: TextStyle(color: AppColor.yellow),
         ),
         centerTitle: true,
       ),
