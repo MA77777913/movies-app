@@ -109,6 +109,60 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   }
 
   void _showAvatarBottomSheet() {
-    // to be implementd later
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setModalState) {
+            return Container(
+              padding: const EdgeInsets.all(16),
+              margin: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: AppColor.gray, // Dark modal container color
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: avatars.length,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  crossAxisSpacing: 12,
+                  mainAxisSpacing: 12,
+                ),
+                itemBuilder: (context, index) {
+                  //final isSelected = selectedAvatarIndex == index;
+                  return GestureDetector(
+                    onTap: () {
+                      //setModalState(() {
+                        //selectedAvatarIndex = index;
+                      //});
+                      //setState(() {}); // Update the main screen avatar
+                      //Navigator.pop(context); // Close bottom sheet
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color:  Colors.transparent,
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: AppColor.yellow,
+                          width: 1.5,
+                        ),
+                      ),
+                      child: CircleAvatar(
+                        backgroundImage: AssetImage(avatars[index]),
+                        backgroundColor: Colors.transparent,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            );
+          },
+        );
+      },
+    );
   }
 }
