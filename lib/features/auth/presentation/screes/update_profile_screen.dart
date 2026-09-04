@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:movies_app/core/utils/app_color.dart';
 import 'package:movies_app/core/utils/app_text_style.dart';
 
-
 import '../../../../core/utils/app_assets.dart';
 
 import '../widgets/login_widgets/custom_button.dart';
@@ -109,9 +108,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     );
   }
 
-
   void _showAvatarBottomSheet() {
     // to be implementd later
   }
 }
-
