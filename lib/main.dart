@@ -4,6 +4,7 @@ import 'package:movies_app/core/utils/app_route.dart';
 import 'package:movies_app/features/auth/presentation/screes/forget_password_screen.dart';
 import 'package:movies_app/features/auth/presentation/screes/login_screen.dart';
 import 'package:movies_app/features/auth/presentation/screes/register_screen.dart';
+import 'package:movies_app/features/auth/presentation/screes/update_profile_screen.dart';
 import 'package:movies_app/features/onboarding/presentation/cubit/onboarding_cubit.dart';
 import 'package:movies_app/features/onboarding/presentation/screens/onboarding_screen.dart';
 
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'movies app',
-      initialRoute: AppRoute.onboardingRoute,
+      initialRoute: AppRoute.updateProfileScreen,
       routes: {
         AppRoute.onboardingRoute: (context) => BlocProvider(
               create: (context) => OnboardingCubit(),
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
         AppRoute.loginRoute: (context) => const LoginScreen(),
         AppRoute.registerRoute: (context) => const RegisterScreen(),
         AppRoute.forgetPasswordRoute: (context) => const ForgetPasswordScreen(),
+        AppRoute.updateProfileScreen: (context) =>  UpdateProfileScreen(),
       },
     );
   }
