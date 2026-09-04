@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../../core/utils/app_color.dart';
 import '../../../../core/utils/app_text_style.dart';
-import '../../../auth/presentation/widgets/custom_button.dart';
+import '../../../auth/presentation/widgets/login_widgets/custom_button.dart';
 import '../../data/models/onboarding_model.dart';
 
 class OnboardingPageWidget extends StatelessWidget {

@@ -1,11 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:movies_app/core/utils/app_color.dart';
 import 'package:movies_app/core/utils/app_text_style.dart';
-import 'package:movies_app/features/auth/presentation/widgets/custom_button.dart';
+
 
 import '../../../../core/utils/app_assets.dart';
-import '../widgets/custom_text_field.dart';
+
+import '../widgets/login_widgets/custom_button.dart';
+import '../widgets/login_widgets/custom_text_field.dart';
 
 class UpdateProfileScreen extends StatefulWidget {
   @override
