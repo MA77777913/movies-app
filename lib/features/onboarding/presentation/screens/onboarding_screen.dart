@@ -38,7 +38,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           backgroundColor: AppColor.black,
           body: PageView.builder(
             controller: _pageController,
-            physics: const NeverScrollableScrollPhysics(), // buttons drive navigation, not swipes
+            physics: const NeverScrollableScrollPhysics(),
             itemCount: cubit.pages.length,
             itemBuilder: (context, index) {
               final model = cubit.pages[index];

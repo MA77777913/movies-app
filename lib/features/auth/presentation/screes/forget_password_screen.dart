@@ -48,7 +48,6 @@ class ForgetPasswordScreen extends StatelessWidget {
               const SizedBox(height: 24),
               CustomButton(
                 onPressed: () {
-                  // TODO: Implement verify email logic
                 },
                 text: 'Verify Email',
               ),
