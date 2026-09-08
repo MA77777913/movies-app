@@ -6,6 +6,7 @@ class CustomTextField extends StatefulWidget {
   final IconData prefixIcon;
   final IconData? suffixIcon;
   final bool isPassword;
+  final TextEditingController? controller;
 
   const CustomTextField({
     super.key,
@@ -13,6 +14,7 @@ class CustomTextField extends StatefulWidget {
     required this.prefixIcon,
     this.suffixIcon,
     this.isPassword = false,
+    this.controller,
   });
 
   @override
@@ -31,6 +33,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: widget.controller,
       obscureText: _obscureText,
       style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
@@ -39,19 +42,19 @@ class _CustomTextFieldState extends State<CustomTextField> {
         prefixIcon: Icon(widget.prefixIcon, color: Colors.white),
         suffixIcon: widget.isPassword
             ? IconButton(
-                icon: Icon(
-                  _obscureText ? Icons.visibility_off : Icons.visibility,
-                  color: Colors.white,
-                ),
-                onPressed: () {
-                  setState(() {
-                    _obscureText = !_obscureText;
-                  });
-                },
-              )
+          icon: Icon(
+            _obscureText ? Icons.visibility_off : Icons.visibility,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            setState(() {
+              _obscureText = !_obscureText;
+            });
+          },
+        )
             : (widget.suffixIcon != null
-                ? Icon(widget.suffixIcon, color: Colors.white)
-                : null),
+            ? Icon(widget.suffixIcon, color: Colors.white)
+            : null),
         filled: true,
         fillColor: AppColor.gray,
         border: OutlineInputBorder(
