@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:movies_app/core/utils/app_route.dart';
 import 'package:movies_app/core/utils/service_locator.dart' as di;
 import 'package:movies_app/features/auth/data/repositories/auth_repository_impl.dart';
@@ -22,6 +23,7 @@ final authRepository = AuthRepositoryImpl();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await di.init();
   runApp(const MyApp());

@@ -3,6 +3,7 @@
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
@@ -49,20 +50,20 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCPEg7fCf9W45gdO0mqd0P9DGALlIZ5crI',
-    appId: '1:241833772638:android:3d6381e5cd118f1a4ed6cf',
-    messagingSenderId: '241833772638',
-    projectId: 'movies-app-55a39',
-    storageBucket: 'movies-app-55a39.firebasestorage.app',
+  static FirebaseOptions get android => FirebaseOptions(
+    apiKey: dotenv.get('ANDROID_API_KEY'),
+    appId: dotenv.get('ANDROID_APP_ID'),
+    messagingSenderId: dotenv.get('ANDROID_MESSAGING_SENDER_ID'),
+    projectId: dotenv.get('ANDROID_PROJECT_ID'),
+    storageBucket: dotenv.get('ANDROID_STORAGE_BUCKET'),
   );
 
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBxPywyM3VkK2YdZd9QvN6URO6sMPXPSRM',
-    appId: '1:241833772638:ios:118c95d8ab55f0d54ed6cf',
-    messagingSenderId: '241833772638',
-    projectId: 'movies-app-55a39',
-    storageBucket: 'movies-app-55a39.firebasestorage.app',
-    iosBundleId: 'com.example.moviesApp',
+  static FirebaseOptions get ios => FirebaseOptions(
+    apiKey: dotenv.get('IOS_API_KEY'),
+    appId: dotenv.get('IOS_APP_ID'),
+    messagingSenderId: dotenv.get('IOS_MESSAGING_SENDER_ID'),
+    projectId: dotenv.get('IOS_PROJECT_ID'),
+    storageBucket: dotenv.get('IOS_STORAGE_BUCKET'),
+    iosBundleId: dotenv.get('IOS_BUNDLE_ID'),
   );
 }
