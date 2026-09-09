@@ -35,7 +35,7 @@ flutter:
   uses-material-design: true
 
   assets:
-    - .env
+    - assets/.env
     - assets/image/
     - assets/onBoarding/
     - assets/image-home/
