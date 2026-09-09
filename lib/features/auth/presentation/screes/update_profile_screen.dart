@@ -165,6 +165,55 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   }
 
   void _showAvatarBottomSheet() {
-    // to be implemented later
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return Container(
+          padding: const EdgeInsets.all(16),
+          margin: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: AppColor.gray, // Dark modal container color
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: avatars.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              crossAxisSpacing: 12,
+              mainAxisSpacing: 12,
+            ),
+            itemBuilder: (context, index) {
+              final isSelected = _selectedAvatar == avatars[index];
+              return GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _selectedAvatar = avatars[index];
+                  });
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: isSelected ? AppColor.yellow : Colors.transparent,
+                      width: 1.5,
+                    ),
+                  ),
+                  child: CircleAvatar(
+                    backgroundImage: AssetImage(avatars[index]),
+                    backgroundColor: Colors.transparent,
+                  ),
+                ),
+              );
+            },
+          ),
+        );
+      },
+    );
   }
 }

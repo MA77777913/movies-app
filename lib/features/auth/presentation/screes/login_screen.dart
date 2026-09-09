@@ -42,11 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
               );
             }
             if (state.status == LoginStatus.success) {
-              // TODO: replace with real Home route once your teammate's screen exists
-              // Navigator.pushReplacementNamed(context, AppRoute.homeRoute);
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Logged in successfully')),
-              );
+              Navigator.pushReplacementNamed(context, AppRoute.homeRoute);
             }
           },
           builder: (context, state) {

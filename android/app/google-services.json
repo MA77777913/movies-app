@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "241833772638",
+    "project_id": "movies-app-55a39",
+    "storage_bucket": "movies-app-55a39.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:241833772638:android:3d6381e5cd118f1a4ed6cf",
+        "android_client_info": {
+          "package_name": "com.example.movies_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPEg7fCf9W45gdO0mqd0P9DGALlIZ5crI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
