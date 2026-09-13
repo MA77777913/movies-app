@@ -1,49 +1,37 @@
 import 'package:json_annotation/json_annotation.dart';
-import '../../domain/entities/movie.dart';
+import '../../domain/entities/movie_details.dart';
 
-part 'movie_model.g.dart';
+part 'movie_details_model.g.dart';
 
 @JsonSerializable()
-class MovieResponseModel {
+class MovieDetailsResponseModel {
   final String status;
   @JsonKey(name: 'status_message')
   final String statusMessage;
-  final MovieDataModel data;
+  final MovieDetailsDataModel data;
 
-  MovieResponseModel({
+  MovieDetailsResponseModel({
     required this.status,
     required this.statusMessage,
     required this.data,
   });
 
-  factory MovieResponseModel.fromJson(Map<String, dynamic> json) =>
-      _$MovieResponseModelFromJson(json);
+  factory MovieDetailsResponseModel.fromJson(Map<String, dynamic> json) =>
+      _$MovieDetailsResponseModelFromJson(json);
 }
 
 @JsonSerializable()
-class MovieDataModel {
-  @JsonKey(name: 'movie_count')
-  final int movieCount;
-  // list_movies.json always returns these; movie_suggestions.json doesn't,
-  // so they have to stay nullable since this model is shared by both.
-  final int? limit;
-  @JsonKey(name: 'page_number')
-  final int? pageNumber;
-  final List<MovieModel>? movies;
+class MovieDetailsDataModel {
+  final MovieDetailsModel movie;
 
-  MovieDataModel({
-    required this.movieCount,
-    this.limit,
-    this.pageNumber,
-    this.movies,
-  });
+  MovieDetailsDataModel({required this.movie});
 
-  factory MovieDataModel.fromJson(Map<String, dynamic> json) =>
-      _$MovieDataModelFromJson(json);
+  factory MovieDetailsDataModel.fromJson(Map<String, dynamic> json) =>
+      _$MovieDetailsDataModelFromJson(json);
 }
 
 @JsonSerializable()
-class MovieModel {
+class MovieDetailsModel {
   final int id;
   final String title;
   @JsonKey(name: 'title_english')
@@ -55,7 +43,8 @@ class MovieModel {
   final String? summary;
   @JsonKey(name: 'description_full')
   final String? descriptionFull;
-  final String? synopsis;
+  @JsonKey(name: 'like_count')
+  final int? likeCount;
   @JsonKey(name: 'yt_trailer_code')
   final String? ytTrailerCode;
   final String? language;
@@ -65,16 +54,24 @@ class MovieModel {
   final String? backgroundImage;
   @JsonKey(name: 'background_image_original')
   final String? backgroundImageOriginal;
-  @JsonKey(name: 'small_cover_image')
-  final String? smallCoverImage;
   @JsonKey(name: 'medium_cover_image')
   final String? mediumCoverImage;
   @JsonKey(name: 'large_cover_image')
   final String? largeCoverImage;
-  @JsonKey(name: 'date_uploaded')
-  final String? dateUploaded;
+  @JsonKey(name: 'medium_screenshot_image1')
+  final String? mediumScreenshotImage1;
+  @JsonKey(name: 'medium_screenshot_image2')
+  final String? mediumScreenshotImage2;
+  @JsonKey(name: 'medium_screenshot_image3')
+  final String? mediumScreenshotImage3;
+  @JsonKey(name: 'large_screenshot_image1')
+  final String? largeScreenshotImage1;
+  @JsonKey(name: 'large_screenshot_image2')
+  final String? largeScreenshotImage2;
+  @JsonKey(name: 'large_screenshot_image3')
+  final String? largeScreenshotImage3;
 
-  MovieModel({
+  MovieDetailsModel({
     required this.id,
     required this.title,
     this.titleEnglish,
@@ -84,23 +81,40 @@ class MovieModel {
     this.genres,
     this.summary,
     this.descriptionFull,
-    this.synopsis,
+    this.likeCount,
     this.ytTrailerCode,
     this.language,
     this.mpaRating,
     this.backgroundImage,
     this.backgroundImageOriginal,
-    this.smallCoverImage,
     this.mediumCoverImage,
     this.largeCoverImage,
-    this.dateUploaded,
+    this.mediumScreenshotImage1,
+    this.mediumScreenshotImage2,
+    this.mediumScreenshotImage3,
+    this.largeScreenshotImage1,
+    this.largeScreenshotImage2,
+    this.largeScreenshotImage3,
   });
 
-  factory MovieModel.fromJson(Map<String, dynamic> json) =>
-      _$MovieModelFromJson(json);
+  factory MovieDetailsModel.fromJson(Map<String, dynamic> json) =>
+      _$MovieDetailsModelFromJson(json);
 
-  Movie toEntity() {
-    return Movie(
+  MovieDetails toEntity() {
+    final screenshots = <String>[
+      ?largeScreenshotImage1,
+      ?largeScreenshotImage2,
+      ?largeScreenshotImage3,
+    ];
+    if (screenshots.isEmpty) {
+      screenshots.addAll([
+        ?mediumScreenshotImage1,
+        ?mediumScreenshotImage2,
+        ?mediumScreenshotImage3,
+      ]);
+    }
+
+    return MovieDetails(
       id: id,
       title: title,
       titleEnglish: titleEnglish,
@@ -110,16 +124,15 @@ class MovieModel {
       genres: genres,
       summary: summary,
       descriptionFull: descriptionFull,
-      synopsis: synopsis,
+      likeCount: likeCount ?? 0,
       ytTrailerCode: ytTrailerCode,
       language: language,
       mpaRating: mpaRating,
       backgroundImage: backgroundImage,
       backgroundImageOriginal: backgroundImageOriginal,
-      smallCoverImage: smallCoverImage,
       mediumCoverImage: mediumCoverImage,
       largeCoverImage: largeCoverImage,
-      dateUploaded: dateUploaded,
+      screenshots: screenshots,
     );
   }
 }

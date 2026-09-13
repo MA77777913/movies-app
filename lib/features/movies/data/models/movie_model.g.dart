@@ -23,8 +23,8 @@ Map<String, dynamic> _$MovieResponseModelToJson(MovieResponseModel instance) =>
 MovieDataModel _$MovieDataModelFromJson(Map<String, dynamic> json) =>
     MovieDataModel(
       movieCount: (json['movie_count'] as num).toInt(),
-      limit: (json['limit'] as num).toInt(),
-      pageNumber: (json['page_number'] as num).toInt(),
+      limit: (json['limit'] as num?)?.toInt(),
+      pageNumber: (json['page_number'] as num?)?.toInt(),
       movies: (json['movies'] as List<dynamic>?)
           ?.map((e) => MovieModel.fromJson(e as Map<String, dynamic>))
           .toList(),
