@@ -1,3 +1,5 @@
+
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,10 +23,17 @@ import 'firebase_options.dart';
 
 final authRepository = AuthRepositoryImpl();
 
-Future<void> main() async {
+Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: "assets/.env");
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  // Prevent duplicate initialization crash
+  if (Firebase.apps.isEmpty) {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  }
+
   await di.init();
   runApp(const MyApp());
 }
