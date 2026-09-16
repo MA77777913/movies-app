@@ -39,6 +39,7 @@ flutter:
     - assets/image/
     - assets/onBoarding/
     - assets/image-home/
+    - assets/movieDetailsAssets/
 
 flutter_native_splash:
   color: "#121312"

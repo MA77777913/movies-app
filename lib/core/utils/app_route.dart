@@ -5,4 +5,7 @@ class AppRoute {
   static const String forgetPasswordRoute = "forgetPasswordRoute";
   static const String updateProfileScreen = "updateProfileScreen";
   static const String homeRoute = "homeRoute";
+  static const String movieDetailsScreen = "movieDetailsScreen";
+
+
 }

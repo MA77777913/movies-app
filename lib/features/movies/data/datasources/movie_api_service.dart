@@ -19,6 +19,7 @@ abstract class MovieApiService {
   Future<MovieDetailsResponseModel> getMovieDetails({
     @Query('movie_id') required int movieId,
     @Query('with_images') bool withImages = true,
+    @Query('with_cast') bool withCast = true,
   });
 
   @GET('/movie_suggestions.json')

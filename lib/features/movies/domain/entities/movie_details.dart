@@ -1,3 +1,5 @@
+import 'cast_member.dart';
+
 class MovieDetails {
   final int id;
   final String title;
@@ -20,6 +22,9 @@ class MovieDetails {
   /// Screenshot URLs for the movie, largest resolution available first.
   final List<String> screenshots;
 
+  /// Actors, only populated when the API is queried with_cast.
+  final List<CastMember> cast;
+
   MovieDetails({
     required this.id,
     required this.title,
@@ -39,5 +44,6 @@ class MovieDetails {
     this.mediumCoverImage,
     this.largeCoverImage,
     this.screenshots = const [],
+    this.cast = const [],
   });
 }

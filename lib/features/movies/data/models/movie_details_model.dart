@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import '../../domain/entities/cast_member.dart';
 import '../../domain/entities/movie_details.dart';
 
 part 'movie_details_model.g.dart';
@@ -28,6 +29,36 @@ class MovieDetailsDataModel {
 
   factory MovieDetailsDataModel.fromJson(Map<String, dynamic> json) =>
       _$MovieDetailsDataModelFromJson(json);
+}
+
+@JsonSerializable()
+class CastMemberModel {
+  final String name;
+  @JsonKey(name: 'character_name')
+  final String? characterName;
+  @JsonKey(name: 'url_small_image')
+  final String? urlSmallImage;
+  @JsonKey(name: 'imdb_code')
+  final String? imdbCode;
+
+  CastMemberModel({
+    required this.name,
+    this.characterName,
+    this.urlSmallImage,
+    this.imdbCode,
+  });
+
+  factory CastMemberModel.fromJson(Map<String, dynamic> json) =>
+      _$CastMemberModelFromJson(json);
+
+  CastMember toEntity() {
+    return CastMember(
+      name: name,
+      characterName: characterName,
+      urlSmallImage: urlSmallImage,
+      imdbCode: imdbCode,
+    );
+  }
 }
 
 @JsonSerializable()
@@ -70,6 +101,7 @@ class MovieDetailsModel {
   final String? largeScreenshotImage2;
   @JsonKey(name: 'large_screenshot_image3')
   final String? largeScreenshotImage3;
+  final List<CastMemberModel>? cast;
 
   MovieDetailsModel({
     required this.id,
@@ -95,6 +127,7 @@ class MovieDetailsModel {
     this.largeScreenshotImage1,
     this.largeScreenshotImage2,
     this.largeScreenshotImage3,
+    this.cast,
   });
 
   factory MovieDetailsModel.fromJson(Map<String, dynamic> json) =>
@@ -133,6 +166,7 @@ class MovieDetailsModel {
       mediumCoverImage: mediumCoverImage,
       largeCoverImage: largeCoverImage,
       screenshots: screenshots,
+      cast: cast?.map((c) => c.toEntity()).toList() ?? const [],
     );
   }
 }

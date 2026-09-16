@@ -32,6 +32,22 @@ Map<String, dynamic> _$MovieDetailsDataModelToJson(
   MovieDetailsDataModel instance,
 ) => <String, dynamic>{'movie': instance.movie};
 
+CastMemberModel _$CastMemberModelFromJson(Map<String, dynamic> json) =>
+    CastMemberModel(
+      name: json['name'] as String,
+      characterName: json['character_name'] as String?,
+      urlSmallImage: json['url_small_image'] as String?,
+      imdbCode: json['imdb_code'] as String?,
+    );
+
+Map<String, dynamic> _$CastMemberModelToJson(CastMemberModel instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      'character_name': instance.characterName,
+      'url_small_image': instance.urlSmallImage,
+      'imdb_code': instance.imdbCode,
+    };
+
 MovieDetailsModel _$MovieDetailsModelFromJson(Map<String, dynamic> json) =>
     MovieDetailsModel(
       id: (json['id'] as num).toInt(),
@@ -59,6 +75,9 @@ MovieDetailsModel _$MovieDetailsModelFromJson(Map<String, dynamic> json) =>
       largeScreenshotImage1: json['large_screenshot_image1'] as String?,
       largeScreenshotImage2: json['large_screenshot_image2'] as String?,
       largeScreenshotImage3: json['large_screenshot_image3'] as String?,
+      cast: (json['cast'] as List<dynamic>?)
+          ?.map((e) => CastMemberModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$MovieDetailsModelToJson(MovieDetailsModel instance) =>
@@ -86,4 +105,5 @@ Map<String, dynamic> _$MovieDetailsModelToJson(MovieDetailsModel instance) =>
       'large_screenshot_image1': instance.largeScreenshotImage1,
       'large_screenshot_image2': instance.largeScreenshotImage2,
       'large_screenshot_image3': instance.largeScreenshotImage3,
+      'cast': instance.cast,
     };

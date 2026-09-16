@@ -48,6 +48,29 @@ void main() {
       expect(entity.rating, isNull);
       expect(entity.runtime, isNull);
     });
+
+    test('parses the cast array returned by with_cast=true', () {
+      final json = jsonDecode(_detailsWithCastJson);
+      final response = MovieDetailsResponseModel.fromJson(json);
+      final entity = response.data.movie.toEntity();
+
+      expect(entity.cast, hasLength(2));
+      expect(entity.cast[0].name, 'Jason Statham');
+      expect(entity.cast[0].characterName, 'Jasper');
+      expect(
+        entity.cast[0].urlSmallImage,
+        'https://yts.gg/assets/images/actors/thumb/nm0005458.jpg',
+      );
+      expect(entity.cast[1].name, 'Emmanuelle Chriqui');
+      expect(entity.cast[1].characterName, 'Aileen');
+    });
+
+    test('cast is an empty list when the API omits it', () {
+      final json = jsonDecode(_detailsMinimalJson);
+      final response = MovieDetailsResponseModel.fromJson(json);
+
+      expect(response.data.movie.toEntity().cast, isEmpty);
+    });
   });
 }
 
@@ -62,4 +85,9 @@ const _detailsMediumOnlyJson = '''
 
 const _detailsMinimalJson = '''
 {"status":"ok","status_message":"ok","data":{"movie":{"id":2,"title":"Bare Minimum"}}}
+''';
+
+// Cast shape captured from movie_details.json?movie_id=10&with_cast=true
+const _detailsWithCastJson = '''
+{"status":"ok","status_message":"ok","data":{"movie":{"id":10,"title":"13","cast":[{"name":"Jason Statham","character_name":"Jasper","url_small_image":"https://yts.gg/assets/images/actors/thumb/nm0005458.jpg","imdb_code":"0005458"},{"name":"Emmanuelle Chriqui","character_name":"Aileen","url_small_image":"https://yts.gg/assets/images/actors/thumb/nm0004825.jpg","imdb_code":"0004825"}]}}}
 ''';

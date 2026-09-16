@@ -19,6 +19,8 @@ import 'package:movies_app/features/movies/presentation/bloc/movies_cubit.dart';
 import 'package:movies_app/features/movies/presentation/pages/main_page.dart';
 import 'package:movies_app/features/onboarding/presentation/cubit/onboarding_cubit.dart';
 import 'package:movies_app/features/onboarding/presentation/screens/onboarding_screen.dart';
+import 'features/movies/presentation/bloc/movie_details_cubit.dart';
+import 'features/movies/presentation/pages/movie_details_screen.dart';
 import 'firebase_options.dart';
 
 final authRepository = AuthRepositoryImpl();
