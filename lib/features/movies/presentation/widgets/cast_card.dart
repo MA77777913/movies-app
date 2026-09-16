@@ -3,7 +3,6 @@ import '../../../../core/utils/app_color.dart';
 import '../../../../core/utils/app_text_style.dart';
 import '../../domain/entities/cast_member.dart';
 
-/// Preliminary design: one actor card (photo + name + character). Restyle freely.
 class CastCard extends StatelessWidget {
   final CastMember member;
 

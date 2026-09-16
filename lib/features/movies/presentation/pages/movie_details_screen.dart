@@ -38,9 +38,6 @@ class _MovieDetailsView extends StatelessWidget {
         builder: (context, state) {
           final movie = state.initialMovie;
           final details = state.details;
-
-          // `details` is null until the API responds, so everything in the
-          // header falls back to the movie we were handed on tap.
           final backgroundImage =
               details?.backgroundImage ?? movie.backgroundImage;
           final year = details?.year ?? movie.year;
@@ -56,10 +53,18 @@ class _MovieDetailsView extends StatelessWidget {
                     color: AppColor.gray,
                     image: backgroundImage != null && backgroundImage.isNotEmpty
                         ? DecorationImage(
-                            image: NetworkImage(backgroundImage),
+                            image: NetworkImage(movie.backgroundImageOriginal!),
                             fit: BoxFit.cover,
                           )
                         : null,
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Color(0x33121312),
+                        Color(0x33121312),
+                      ]
+                    )
                   ),
                   child: Stack(
                     children: [
@@ -162,7 +167,6 @@ class _MovieDetailsView extends StatelessWidget {
   }
 }
 
-/// Everything below the header needs the API response, so it waits for it.
 class _DetailsSections extends StatelessWidget {
   final MovieDetailsState state;
 
