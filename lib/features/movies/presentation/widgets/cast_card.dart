@@ -22,7 +22,7 @@ class CastCard extends StatelessWidget {
       child: Row(
         children: [
           ClipRRect(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(10),
             child: SizedBox(
               width: 70,
               height: 70,
@@ -49,10 +49,7 @@ class CastCard extends StatelessWidget {
                 const SizedBox(height: 6),
                 Text(
                   'Character: ${member.characterName ?? '-'}',
-                  style: AppTextStyle.normalTextStyle.copyWith(
-                    fontSize: 16,
-                    color: Colors.white60,
-                  ),
+                  style: AppTextStyle.normalTextStyle
                 ),
               ],
             ),

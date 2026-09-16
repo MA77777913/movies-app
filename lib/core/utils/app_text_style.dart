@@ -52,4 +52,9 @@ class AppTextStyle {
     color: AppColor.gray,
     fontWeight: FontWeight.w700,
   );
+  static TextStyle sumaryTextStyle = GoogleFonts.roboto(
+    fontSize: 16,
+    color: AppColor.white,
+    fontWeight: FontWeight.w400,
+  );
 }

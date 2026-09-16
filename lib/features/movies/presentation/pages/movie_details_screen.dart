@@ -236,7 +236,7 @@ class _DetailsSections extends StatelessWidget {
             const _SectionTitle("Summary"),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text(summary, style: AppTextStyle.normalTextStyle),
+              child: Text(summary, style: AppTextStyle.sumaryTextStyle),
             ),
           ],
           if (details.cast.isNotEmpty) ...[
