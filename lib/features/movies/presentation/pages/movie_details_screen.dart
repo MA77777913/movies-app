@@ -66,8 +66,8 @@ class _MovieDetailsView extends StatelessWidget {
                             end: Alignment.bottomCenter,
                             colors: [
                               Colors.transparent,
-                              Colors.black.withOpacity(0.3),
-                              Colors.black.withOpacity(0.7),
+                              Colors.black.withValues(alpha: 0.3),
+                              Colors.black.withValues(alpha: 0.7),
                               AppColor.black,
                             ],
                             stops: const [0.0, 0.4, 0.8, 1.0],
