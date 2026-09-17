@@ -1,48 +1,43 @@
 
-
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import '../../../../core/utils/app_color.dart';
-import '../../../../core/utils/app_text_style.dart';
 
-class AdditionalDetails extends StatelessWidget{
+class AdditionalDetails extends StatelessWidget {
+  final String iconPath;
+  final String likeCount;
 
-  String likeCount;
-  String iconPath;
-
-  AdditionalDetails({required this.iconPath,required this.likeCount});
+  const AdditionalDetails({
+    super.key,
+    required this.iconPath,
+    required this.likeCount,
+  });
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Container(
-      height: 47,
-      width: 122,
+      height: 42,
+      padding: const EdgeInsets.symmetric(horizontal: 18),
       decoration: BoxDecoration(
-        color: AppColor.gray,
+        color: const Color(0xFF282A28),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 6,right: 6),
-            child: Container(
-              child: Image.asset(
-                iconPath,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 6,right: 6),
-            child: Text(
-              likeCount,
-              style: AppTextStyle.titleMovieDetails,
+          Image.asset(iconPath, width: 20, height: 20),
+          const SizedBox(width: 10),
+          Text(
+            likeCount,
+            style: const TextStyle(
+              color: AppColor.white,
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
             ),
           ),
         ],
       ),
     );
   }
-
 }

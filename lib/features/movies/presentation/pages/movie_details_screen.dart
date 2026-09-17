@@ -38,8 +38,7 @@ class _MovieDetailsView extends StatelessWidget {
         builder: (context, state) {
           final movie = state.initialMovie;
           final details = state.details;
-          final backgroundImage =
-              details?.backgroundImage ?? movie.backgroundImage;
+          final posterImage = movie.largeCoverImage ?? details?.largeCoverImage;
           final year = details?.year ?? movie.year;
           final runtime = details?.runtime ?? movie.runtime;
           final rating = details?.rating ?? movie.rating;
@@ -48,112 +47,125 @@ class _MovieDetailsView extends StatelessWidget {
             child: Column(
               children: [
                 Container(
-                  height: 645,
-                  decoration: BoxDecoration(
-                    color: AppColor.gray,
-                    image: backgroundImage != null && backgroundImage.isNotEmpty
-                        ? DecorationImage(
-                            image: NetworkImage(movie.backgroundImageOriginal!),
-                            fit: BoxFit.cover,
-                          )
-                        : null,
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Color(0x33121312),
-                        Color(0x33121312),
-                      ]
-                    )
-                  ),
+                  height: MediaQuery.of(context).size.height * 0.72,
+                  color: AppColor.gray,
                   child: Stack(
+                    fit: StackFit.expand,
                     children: [
-                      Column(
-                        children: [
-                          const SizedBox(height: 28),
-                          Padding(
-                            padding: const EdgeInsets.all(14.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                IconButton(
-                                  icon: const Icon(
-                                    Icons.arrow_back_ios,
-                                    color: AppColor.white,
-                                    size: 29,
-                                  ),
-                                  onPressed: () => Navigator.pop(context),
-                                ),
-                                const Icon(
-                                  Icons.bookmark_outlined,
-                                  color: AppColor.white,
-                                  size: 29,
-                                ),
-                              ],
-                            ),
+                      if (posterImage != null && posterImage.isNotEmpty)
+                        Image.network(
+                          posterImage,
+                          fit: BoxFit.cover,
+                          errorBuilder: (_, __, ___) => Container(color: AppColor.gray),
+                        ),
+
+                      Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Colors.transparent,
+                              Colors.black.withValues(alpha: 0.3),
+                              Colors.black.withValues(alpha: 0.7),
+                              AppColor.black,
+                            ],
+                            stops: const [0.0, 0.4, 0.8, 1.0],
                           ),
-                        ],
-                      ),
-                      Center(
-                        child: IconButton(
-                          onPressed: () {},
-                          icon: Image.asset("assets/image/play_btn.png"),
                         ),
                       ),
-                      Column(
-                        children: [
-                          const Spacer(),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Align(
-                              alignment: Alignment.center,
+
+                      SafeArea(
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  IconButton(
+                                    icon: const Icon(Icons.arrow_back_ios_new,
+                                        color: AppColor.white, size: 24),
+                                    onPressed: () => Navigator.pop(context),
+                                  ),
+                                  IconButton(
+                                    icon: const Icon(Icons.bookmark,
+                                        color: AppColor.white, size: 28),
+                                    onPressed: () {},
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const Spacer(),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 20),
                               child: Text(
                                 movie.title,
-                                style: AppTextStyle.titleMovieDetails,
+                                textAlign: TextAlign.center,
+                                style: AppTextStyle.titleMovieDetails.copyWith(fontSize: 24),
                               ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: Text(
-                                year?.toString() ?? '',
-                                style: AppTextStyle.titleMovieDetailsDate,
+                            const SizedBox(height: 12),
+                            Text(
+                              year?.toString() ?? '',
+                              style: AppTextStyle.titleMovieDetailsDate.copyWith(
+                                color: Colors.white70,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w400,
                               ),
                             ),
+                            const SizedBox(height: 32),
+                          ],
+                        ),
+                      ),
+
+                      Center(
+                        child: GestureDetector(
+                          onTap: () {},
+                          child: Container(
+                            width: 84,
+                            height: 84,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: AppColor.yellow,
+                              border: Border.all(color: AppColor.white, width: 3),
+                            ),
+                            child: const Icon(Icons.play_arrow_rounded,
+                                color: AppColor.white, size: 56),
                           ),
-                        ],
+                        ),
                       ),
                     ],
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: CustomButton(
-                    onPressed: () {},
-                    text: "Watch",
-                    backgroundColor: AppColor.red,
-                    textColor: AppColor.white,
+                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: 58,
+                    child: CustomButton(
+                      onPressed: () {},
+                      text: "Watch",
+                      backgroundColor: AppColor.red,
+                      textColor: AppColor.white,
+                    ),
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      AdditionalDetails(
-                        iconPath: "assets/movieDetailsAssets/like.png",
-                        likeCount: details?.likeCount.toString() ?? '-',
-                      ),
-                      AdditionalDetails(
-                        iconPath: "assets/movieDetailsAssets/time.png",
-                        likeCount: runtime?.toString() ?? '-',
-                      ),
-                      AdditionalDetails(
-                        iconPath: "assets/movieDetailsAssets/star.png",
-                        likeCount: rating?.toString() ?? '-',
-                      ),
+                      Expanded(child: AdditionalDetails(
+                          iconPath: "assets/movieDetailsAssets/like.png",
+                          likeCount: details?.likeCount.toString() ?? '-')),
+                      const SizedBox(width: 12),
+                      Expanded(child: AdditionalDetails(
+                          iconPath: "assets/movieDetailsAssets/time.png",
+                          likeCount: runtime?.toString() ?? '-')),
+                      const SizedBox(width: 12),
+                      Expanded(child: AdditionalDetails(
+                          iconPath: "assets/movieDetailsAssets/star.png",
+                          likeCount: rating?.toString() ?? '-')),
                     ],
                   ),
                 ),
