@@ -42,4 +42,19 @@ class AppTextStyle {
     color: AppColor.white,
     fontWeight: FontWeight.w400,
   );
+  static TextStyle titleMovieDetails = GoogleFonts.roboto(
+    fontSize: 24,
+    color: AppColor.white,
+    fontWeight: FontWeight.w700,
+  );
+  static TextStyle titleMovieDetailsDate = GoogleFonts.roboto(
+    fontSize: 20,
+    color: AppColor.gray,
+    fontWeight: FontWeight.w700,
+  );
+  static TextStyle sumaryTextStyle = GoogleFonts.roboto(
+    fontSize: 16,
+    color: AppColor.white,
+    fontWeight: FontWeight.w400,
+  );
 }

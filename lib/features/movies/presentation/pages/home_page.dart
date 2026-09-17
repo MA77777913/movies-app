@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/utils/app_assets.dart';
 import '../../../../core/utils/app_color.dart';
+import '../../domain/entities/movie.dart';
 import '../bloc/movies_cubit.dart';
 import '../bloc/movies_state.dart';
 import '../widgets/featured_carousel.dart';
 import '../widgets/rating_badge.dart';
+import 'movie_details_screen.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -98,7 +100,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildMoviesSection(BuildContext context, String title, List<dynamic> moviesList) {
+  Widget _buildMoviesSection(BuildContext context, String title, List<Movie> moviesList) {
     return Column(
       children: [
         Padding(
@@ -126,24 +128,32 @@ class HomePage extends StatelessWidget {
             itemCount: moviesList.length,
             itemBuilder: (context, index) {
               final movie = moviesList[index];
-              return Container(
-                width: 130,
-                margin: const EdgeInsets.symmetric(horizontal: 10),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(15),
-                  child: Stack(
-                    fit: StackFit.expand,
-                    children: [
-                      Image.network(
-                        movie.mediumCoverImage ?? '',
-                        fit: BoxFit.cover,
-                      ),
-                      Positioned(
-                        top: 5,
-                        left: 5,
-                        child: RatingBadge(rating: movie.rating ?? 0),
-                      ),
-                    ],
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => MovieDetailsScreen(movie: movie)),
+                  );
+                },
+                child: Container(
+                  width: 130,
+                  margin: const EdgeInsets.symmetric(horizontal: 10),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(15),
+                    child: Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        Image.network(
+                          movie.mediumCoverImage ?? '',
+                          fit: BoxFit.cover,
+                        ),
+                        Positioned(
+                          top: 5,
+                          left: 5,
+                          child: RatingBadge(rating: movie.rating ?? 0),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               );

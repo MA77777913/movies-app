@@ -24,15 +24,17 @@ class MovieResponseModel {
 class MovieDataModel {
   @JsonKey(name: 'movie_count')
   final int movieCount;
-  final int limit;
+  // list_movies.json always returns these; movie_suggestions.json doesn't,
+  // so they have to stay nullable since this model is shared by both.
+  final int? limit;
   @JsonKey(name: 'page_number')
-  final int pageNumber;
+  final int? pageNumber;
   final List<MovieModel>? movies;
 
   MovieDataModel({
     required this.movieCount,
-    required this.limit,
-    required this.pageNumber,
+    this.limit,
+    this.pageNumber,
     this.movies,
   });
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../domain/entities/movie.dart';
+import '../pages/movie_details_screen.dart';
 import 'rating_badge.dart';
 
 class FeaturedCarousel extends StatefulWidget {
@@ -49,29 +50,37 @@ class _FeaturedCarouselState extends State<FeaturedCarousel> {
           final movie = widget.movies[index];
           final isCenter = index == _currentPage;
           
-          return AnimatedContainer(
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeOut,
-            margin: EdgeInsets.symmetric(
-              horizontal: 10,
-              vertical: isCenter ? 0 : 40,
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  Image.network(
-                    movie.largeCoverImage ?? '',
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) => Container(color: Colors.grey),
-                  ),
-                  Positioned(
-                    top: 10,
-                    left: 10,
-                    child: RatingBadge(rating: movie.rating ?? 0),
-                  ),
-                ],
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => MovieDetailsScreen(movie: movie)),
+              );
+            },
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeOut,
+              margin: EdgeInsets.symmetric(
+                horizontal: 10,
+                vertical: isCenter ? 0 : 40,
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    Image.network(
+                      movie.largeCoverImage ?? '',
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) => Container(color: Colors.grey),
+                    ),
+                    Positioned(
+                      top: 10,
+                      left: 10,
+                      child: RatingBadge(rating: movie.rating ?? 0),
+                    ),
+                  ],
+                ),
               ),
             ),
           );
