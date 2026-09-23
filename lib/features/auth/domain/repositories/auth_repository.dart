@@ -13,6 +13,8 @@ abstract class AuthRepository {
 
   Future<void> resetPassword({required String email});
 
+  Future<void> signOut();
+
   Future<UserEntity> getCurrentUserProfile();
 
   Future<void> updateProfile({

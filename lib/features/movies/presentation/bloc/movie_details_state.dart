@@ -11,6 +11,7 @@ class MovieDetailsState {
   final Movie initialMovie;
   final MovieDetails? details;
   final List<Movie> suggestions;
+  final bool isInWatchlist;
   final String? errorMessage;
 
   MovieDetailsState({
@@ -18,6 +19,7 @@ class MovieDetailsState {
     this.status = MovieDetailsStatus.initial,
     this.details,
     this.suggestions = const [],
+    this.isInWatchlist = false,
     this.errorMessage,
   });
 
@@ -25,6 +27,7 @@ class MovieDetailsState {
     MovieDetailsStatus? status,
     MovieDetails? details,
     List<Movie>? suggestions,
+    bool? isInWatchlist,
     String? errorMessage,
   }) {
     return MovieDetailsState(
@@ -32,6 +35,7 @@ class MovieDetailsState {
       status: status ?? this.status,
       details: details ?? this.details,
       suggestions: suggestions ?? this.suggestions,
+      isInWatchlist: isInWatchlist ?? this.isInWatchlist,
       errorMessage: errorMessage,
     );
   }

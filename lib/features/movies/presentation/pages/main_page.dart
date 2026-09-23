@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'home_page.dart';
+import '../../../profile/presentation/pages/profile_tab.dart';
 import '../widgets/custom_bottom_navigation_bar.dart';
 
 class MainPage extends StatefulWidget {
@@ -32,15 +33,7 @@ class _MainPageState extends State<MainPage> {
         ),
       ),
     ),
-    const Center(
-      child: Text(
-        'Profile Screen',
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 24,
-        ),
-      ),
-    ),
+    const ProfileTab(),
   ];
 
   @override
