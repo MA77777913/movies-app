@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../profile/domain/usecases/is_in_watchlist_usecase.dart';
 import '../../../profile/domain/usecases/record_history_usecase.dart';
@@ -63,8 +64,10 @@ class MovieDetailsCubit extends Cubit<MovieDetailsState> {
     try {
       final saved = await isInWatchlistUseCase(state.initialMovie.id);
       _emitWatchlistFlag(saved);
-    } catch (_) {
-      // Leave the flag as it is.
+    } catch (e) {
+      // Leave the flag as it is, but say why: a denied read here usually
+      // means the Firestore rules have not been published.
+      debugPrint('Could not read watch list state: $e');
     }
   }
 
@@ -80,8 +83,10 @@ class MovieDetailsCubit extends Cubit<MovieDetailsState> {
   Future<void> _recordVisit() async {
     try {
       await recordHistoryUseCase(state.initialMovie);
-    } catch (_) {
-      // History is best effort.
+    } catch (e) {
+      // History is best effort, but a silent failure here is what makes the
+      // profile counter look stuck, so leave a trace.
+      debugPrint('Could not record this movie in history: $e');
     }
   }
 }

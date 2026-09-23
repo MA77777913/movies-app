@@ -15,11 +15,11 @@ import '../../features/movies/presentation/bloc/movies_cubit.dart';
 import '../../features/profile/data/datasources/user_library_remote_data_source.dart';
 import '../../features/profile/data/repositories/user_library_repository_impl.dart';
 import '../../features/profile/domain/repositories/user_library_repository.dart';
-import '../../features/profile/domain/usecases/get_history_usecase.dart';
-import '../../features/profile/domain/usecases/get_watchlist_usecase.dart';
 import '../../features/profile/domain/usecases/is_in_watchlist_usecase.dart';
 import '../../features/profile/domain/usecases/record_history_usecase.dart';
 import '../../features/profile/domain/usecases/toggle_watchlist_usecase.dart';
+import '../../features/profile/domain/usecases/watch_history_usecase.dart';
+import '../../features/profile/domain/usecases/watch_watchlist_usecase.dart';
 import '../../features/profile/presentation/cubit/profile_cubit.dart';
 
 final sl = GetIt.instance;
@@ -43,8 +43,8 @@ Future<void> init() async {
   sl.registerLazySingleton(() => GetMoviesUseCase(sl()));
   sl.registerLazySingleton(() => GetMovieDetailsUseCase(sl()));
   sl.registerLazySingleton(() => GetMovieSuggestionsUseCase(sl()));
-  sl.registerLazySingleton(() => GetWatchlistUseCase(sl()));
-  sl.registerLazySingleton(() => GetHistoryUseCase(sl()));
+  sl.registerLazySingleton(() => WatchWatchlistUseCase(sl()));
+  sl.registerLazySingleton(() => WatchHistoryUseCase(sl()));
   sl.registerLazySingleton(() => IsInWatchlistUseCase(sl()));
   sl.registerLazySingleton(() => ToggleWatchlistUseCase(sl()));
   sl.registerLazySingleton(() => RecordHistoryUseCase(sl()));

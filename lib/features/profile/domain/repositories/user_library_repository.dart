@@ -3,9 +3,11 @@ import '../../../movies/domain/entities/movie.dart';
 /// The signed-in user's saved movies: the watch list they curate and the
 /// history of what they have opened.
 abstract class UserLibraryRepository {
-  Future<List<Movie>> getWatchlist();
+  /// Live view of the watch list; emits again whenever it changes.
+  Stream<List<Movie>> watchWatchlist();
 
-  Future<List<Movie>> getHistory();
+  /// Live view of the history; emits again whenever it changes.
+  Stream<List<Movie>> watchHistory();
 
   Future<bool> isInWatchlist(int movieId);
 

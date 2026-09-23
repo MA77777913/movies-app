@@ -23,10 +23,10 @@ class UserLibraryRemoteDataSource {
     return _firestore.collection('users').doc(uid).collection(name);
   }
 
-  Future<List<SavedMovieModel>> getSavedMovies(String collection) async {
-    final snapshot =
-        await _collection(collection).orderBy('savedAt', descending: true).get();
-    return snapshot.docs.map((doc) => SavedMovieModel.fromMap(doc.data())).toList();
+  /// Emits the collection every time it changes, so the profile counters
+  /// follow the database instead of a snapshot taken when the tab was built.
+  Stream<List<SavedMovieModel>> watchSavedMovies(String collection) {
+    return _collection(collection).snapshots().map(_toSortedModels);
   }
 
   Future<bool> exists(String collection, int movieId) async {
@@ -43,5 +43,18 @@ class UserLibraryRemoteDataSource {
 
   Future<void> remove(String collection, int movieId) async {
     await _collection(collection).doc(movieId.toString()).delete();
+  }
+
+  List<SavedMovieModel> _toSortedModels(QuerySnapshot<Map<String, dynamic>> snapshot) {
+    final movies =
+        snapshot.docs.map((doc) => SavedMovieModel.fromMap(doc.data())).toList();
+    // Newest first. A row written moments ago still has a null savedAt while
+    // the server timestamp resolves, so treat those as the newest.
+    movies.sort((a, b) {
+      if (a.savedAt == null) return -1;
+      if (b.savedAt == null) return 1;
+      return b.savedAt!.compareTo(a.savedAt!);
+    });
+    return movies;
   }
 }

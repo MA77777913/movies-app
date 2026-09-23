@@ -72,27 +72,32 @@ class _ProfileView extends StatelessWidget {
                   },
                   onExit: () => context.read<ProfileCubit>().signOut(),
                 ),
-                TabBar(
-                  indicatorColor: AppColor.yellow,
-                  labelColor: AppColor.yellow,
-                  unselectedLabelColor: Colors.white60,
-                  labelStyle: AppTextStyle.normalTextStyle,
-                  tabs: const [
-                    Tab(text: 'Watch List'),
-                    Tab(text: 'History'),
-                  ],
+                ColoredBox(
+                  color: AppColor.dark,
+                  child: TabBar(
+                    indicatorColor: AppColor.yellow,
+                    // Run the indicator the full width of the tab.
+                    indicatorSize: TabBarIndicatorSize.tab,
+                    labelColor: AppColor.white,
+                    unselectedLabelColor: AppColor.white,
+                    labelStyle: AppTextStyle.normalTextStyle,
+                    tabs: const [
+                      Tab(
+                        icon: Icon(Icons.list, color: AppColor.yellow),
+                        text: 'Watch List',
+                      ),
+                      Tab(
+                        icon: Icon(Icons.folder, color: AppColor.yellow),
+                        text: 'History',
+                      ),
+                    ],
+                  ),
                 ),
                 Expanded(
                   child: TabBarView(
                     children: [
-                      ProfileMoviesGrid(
-                        movies: state.watchlist,
-                        emptyMessage: 'No movies in your watch list yet.',
-                      ),
-                      ProfileMoviesGrid(
-                        movies: state.history,
-                        emptyMessage: 'You have not watched anything yet.',
-                      ),
+                      ProfileMoviesGrid(movies: state.watchlist),
+                      ProfileMoviesGrid(movies: state.history),
                     ],
                   ),
                 ),

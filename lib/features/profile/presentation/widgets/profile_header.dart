@@ -31,64 +31,71 @@ class ProfileHeader extends StatelessWidget {
         ? user!.avatar
         : AppAssets.avatars.first;
 
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 24, 16, 8),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: Column(
-                  children: [
-                    CircleAvatar(
-                      radius: 44,
-                      backgroundColor: Colors.transparent,
-                      backgroundImage: AssetImage(avatar),
-                    ),
-                    const SizedBox(height: 12),
-                    Text(
-                      user?.name ?? '',
-                      textAlign: TextAlign.center,
-                      style: AppTextStyle.titleMovieDetails.copyWith(fontSize: 20),
-                    ),
-                  ],
+    return Container(
+      color: AppColor.dark,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 24, 16, 8),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 118,
+                        width: 118,
+                        child: CircleAvatar(
+                          backgroundColor: Colors.transparent,
+                          backgroundImage: AssetImage(avatar),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        user?.name ?? '',
+                        textAlign: TextAlign.center,
+                        style: AppTextStyle.titleMovieDetails.copyWith(fontSize: 20),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              Expanded(
-                child: _Counter(count: watchlistCount, label: 'Wish List'),
-              ),
-              Expanded(
-                child: _Counter(count: historyCount, label: 'History'),
-              ),
-            ],
-          ),
-          const SizedBox(height: 24),
-          Row(
-            children: [
-              Expanded(
-                flex: 2,
-                child: CustomButton(
-                  isNormanStyle: true,
-                  onPressed: onEditProfile,
-                  text: 'Edit Profile',
-                  backgroundColor: AppColor.yellow,
-                  textColor: AppColor.black,
+                Expanded(
+                  child: _Counter(count: watchlistCount, label: 'Wish List'),
                 ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                flex: 1,
-                child: CustomButton(
-                  isNormanStyle: true,
-                  onPressed: isSigningOut ? () {} : onExit,
-                  text: 'Exit',
-                  backgroundColor: AppColor.red,
-                  textColor: AppColor.white,
+                Expanded(
+                  child: _Counter(count: historyCount, label: 'History'),
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+            const SizedBox(height: 24),
+            Row(
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: CustomButton(
+                    isNormanStyle: true,
+                    onPressed: onEditProfile,
+                    text: 'Edit Profile',
+                    backgroundColor: AppColor.yellow,
+                    textColor: AppColor.black,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  flex: 1,
+                  child: CustomButton(
+                    isNormanStyle: true,
+                    onPressed: isSigningOut ? () {} : onExit,
+                    text: 'Exit',
+                    icon: Icons.logout,
+                    backgroundColor: AppColor.red,
+                    textColor: AppColor.white,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -106,13 +113,13 @@ class _Counter extends StatelessWidget {
       children: [
         Text(
           count.toString(),
-          style: AppTextStyle.titleMovieDetails.copyWith(fontSize: 28),
+          style: AppTextStyle.titleMovieDetails.copyWith(fontSize: 36),
         ),
         const SizedBox(height: 6),
         Text(
           label,
           textAlign: TextAlign.center,
-          style: AppTextStyle.normalTextStyle.copyWith(fontSize: 18),
+          style: AppTextStyle.normalTextStyle.copyWith(fontSize: 24),
         ),
       ],
     );

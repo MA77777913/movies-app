@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../../../core/utils/app_assets.dart';
 import '../../../../core/utils/app_color.dart';
-import '../../../../core/utils/app_text_style.dart';
 import '../../../movies/domain/entities/movie.dart';
 import '../../../movies/presentation/pages/movie_details_screen.dart';
 import '../../../movies/presentation/widgets/rating_badge.dart';
@@ -8,25 +8,17 @@ import '../../../movies/presentation/widgets/rating_badge.dart';
 /// Preliminary design: three covers per row, rating in the corner.
 class ProfileMoviesGrid extends StatelessWidget {
   final List<Movie> movies;
-  final String emptyMessage;
 
-  const ProfileMoviesGrid({
-    super.key,
-    required this.movies,
-    required this.emptyMessage,
-  });
+  const ProfileMoviesGrid({super.key, required this.movies});
 
   @override
   Widget build(BuildContext context) {
     if (movies.isEmpty) {
       return Center(
-        child: Padding(
-          padding: const EdgeInsets.all(32),
-          child: Text(
-            emptyMessage,
-            textAlign: TextAlign.center,
-            style: AppTextStyle.normalTextStyle.copyWith(color: Colors.white60),
-          ),
+        child: Image.asset(
+          AppAssets.empty,
+          width: 124,
+          height: 124,
         ),
       );
     }

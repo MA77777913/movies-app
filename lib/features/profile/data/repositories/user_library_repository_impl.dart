@@ -9,17 +9,17 @@ class UserLibraryRepositoryImpl implements UserLibraryRepository {
   UserLibraryRepositoryImpl(this.remoteDataSource);
 
   @override
-  Future<List<Movie>> getWatchlist() async {
-    final saved = await remoteDataSource
-        .getSavedMovies(UserLibraryRemoteDataSource.watchlistCollection);
-    return saved.map((m) => m.toEntity()).toList();
+  Stream<List<Movie>> watchWatchlist() {
+    return remoteDataSource
+        .watchSavedMovies(UserLibraryRemoteDataSource.watchlistCollection)
+        .map((saved) => saved.map((m) => m.toEntity()).toList());
   }
 
   @override
-  Future<List<Movie>> getHistory() async {
-    final saved = await remoteDataSource
-        .getSavedMovies(UserLibraryRemoteDataSource.historyCollection);
-    return saved.map((m) => m.toEntity()).toList();
+  Stream<List<Movie>> watchHistory() {
+    return remoteDataSource
+        .watchSavedMovies(UserLibraryRemoteDataSource.historyCollection)
+        .map((saved) => saved.map((m) => m.toEntity()).toList());
   }
 
   @override

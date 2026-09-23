@@ -34,10 +34,10 @@ class _PendingRepository implements MoviesRepository {
 
 class _EmptyUserLibraryRepository implements UserLibraryRepository {
   @override
-  Future<List<Movie>> getWatchlist() async => [];
+  Stream<List<Movie>> watchWatchlist() => const Stream.empty();
 
   @override
-  Future<List<Movie>> getHistory() async => [];
+  Stream<List<Movie>> watchHistory() => const Stream.empty();
 
   @override
   Future<bool> isInWatchlist(int movieId) async => false;

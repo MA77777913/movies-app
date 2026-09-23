@@ -1,10 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:movies_app/features/auth/domain/entities/user_entity.dart';
 import 'package:movies_app/features/auth/domain/repositories/auth_repository.dart';
 import 'package:movies_app/features/movies/domain/entities/movie.dart';
 import 'package:movies_app/features/profile/domain/repositories/user_library_repository.dart';
-import 'package:movies_app/features/profile/domain/usecases/get_history_usecase.dart';
-import 'package:movies_app/features/profile/domain/usecases/get_watchlist_usecase.dart';
+import 'package:movies_app/features/profile/domain/usecases/watch_history_usecase.dart';
+import 'package:movies_app/features/profile/domain/usecases/watch_watchlist_usecase.dart';
 import 'package:movies_app/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:movies_app/features/profile/presentation/cubit/profile_state.dart';
 
@@ -54,14 +56,14 @@ class _FakeAuthRepository implements AuthRepository {
 }
 
 class _FakeUserLibraryRepository implements UserLibraryRepository {
-  List<Movie> watchlist = const [];
-  List<Movie> history = const [];
+  final watchlistController = StreamController<List<Movie>>.broadcast();
+  final historyController = StreamController<List<Movie>>.broadcast();
 
   @override
-  Future<List<Movie>> getWatchlist() async => watchlist;
+  Stream<List<Movie>> watchWatchlist() => watchlistController.stream;
 
   @override
-  Future<List<Movie>> getHistory() async => history;
+  Stream<List<Movie>> watchHistory() => historyController.stream;
 
   @override
   Future<bool> isInWatchlist(int movieId) async => false;
@@ -71,6 +73,11 @@ class _FakeUserLibraryRepository implements UserLibraryRepository {
 
   @override
   Future<void> recordInHistory(Movie movie) async {}
+
+  Future<void> dispose() async {
+    await watchlistController.close();
+    await historyController.close();
+  }
 }
 
 UserEntity _user() => const UserEntity(
@@ -87,8 +94,8 @@ void main() {
 
   ProfileCubit buildCubit() => ProfileCubit(
         auth,
-        GetWatchlistUseCase(library),
-        GetHistoryUseCase(library),
+        WatchWatchlistUseCase(library),
+        WatchHistoryUseCase(library),
       );
 
   setUp(() {
@@ -96,13 +103,17 @@ void main() {
     library = _FakeUserLibraryRepository();
   });
 
-  test('loadProfile fills the user and both lists', () async {
+  tearDown(() => library.dispose());
+
+  test('loadProfile fills the user and subscribes to both lists', () async {
     auth.profileToReturn = _user();
-    library.watchlist = [Movie(id: 1, title: 'One'), Movie(id: 2, title: 'Two')];
-    library.history = [Movie(id: 3, title: 'Three')];
 
     final cubit = buildCubit();
     await cubit.loadProfile();
+
+    library.watchlistController.add([Movie(id: 1, title: 'One'), Movie(id: 2, title: 'Two')]);
+    library.historyController.add([Movie(id: 3, title: 'Three')]);
+    await Future<void>.delayed(Duration.zero);
 
     expect(cubit.state.status, ProfileStatus.loaded);
     expect(cubit.state.user?.name, 'Test User');
@@ -112,14 +123,36 @@ void main() {
 
   test('the counters shown above the labels come from the list lengths', () async {
     auth.profileToReturn = _user();
-    library.watchlist = List.generate(12, (i) => Movie(id: i, title: 'Movie $i'));
-    library.history = List.generate(10, (i) => Movie(id: 100 + i, title: 'Seen $i'));
 
     final cubit = buildCubit();
     await cubit.loadProfile();
 
+    library.watchlistController
+        .add(List.generate(12, (i) => Movie(id: i, title: 'Movie $i')));
+    library.historyController
+        .add(List.generate(10, (i) => Movie(id: 100 + i, title: 'Seen $i')));
+    await Future<void>.delayed(Duration.zero);
+
     expect(cubit.state.watchlistCount, 12);
     expect(cubit.state.historyCount, 10);
+  });
+
+  test('a later database write updates the counters without reloading', () async {
+    auth.profileToReturn = _user();
+
+    final cubit = buildCubit();
+    await cubit.loadProfile();
+
+    library.historyController.add([Movie(id: 1, title: 'One')]);
+    await Future<void>.delayed(Duration.zero);
+    expect(cubit.state.historyCount, 1);
+
+    // Opening another movie writes to Firestore, which pushes a new list.
+    library.historyController
+        .add([Movie(id: 1, title: 'One'), Movie(id: 2, title: 'Two')]);
+    await Future<void>.delayed(Duration.zero);
+
+    expect(cubit.state.historyCount, 2);
   });
 
   test('loadProfile reports an error when the profile cannot be read', () async {
