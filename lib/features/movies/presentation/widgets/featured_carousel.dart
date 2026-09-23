@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../domain/entities/movie.dart';
 import '../pages/movie_details_screen.dart';
-import 'rating_badge.dart';
+import '../../../../core/widgets/rating_badge.dart';
 
 class FeaturedCarousel extends StatefulWidget {
   final List<Movie> movies;
