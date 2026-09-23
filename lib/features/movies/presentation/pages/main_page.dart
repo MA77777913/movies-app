@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../search/presentation/pages/search_page.dart';
 import 'home_page.dart';
 import '../widgets/custom_bottom_navigation_bar.dart';
 
@@ -14,15 +15,7 @@ class _MainPageState extends State<MainPage> {
 
   final List<Widget> _pages = [
     const HomePage(),
-    const Center(
-      child: Text(
-        'Search Screen',
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 24,
-        ),
-      ),
-    ),
+    const SearchPage(),
     const Center(
       child: Text(
         'Browse Screen',
