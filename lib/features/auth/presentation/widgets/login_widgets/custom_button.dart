@@ -37,7 +37,7 @@ class CustomButton extends StatelessWidget {
                 ? BorderSide(color: borderColor!, width: 2)
                 : BorderSide.none,
           ),
-          elevation: 0, // Removes shadow to keep the outline clean
+          elevation: 0,
         ),
         child: Builder(
           builder: (context) {

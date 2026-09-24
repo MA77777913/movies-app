@@ -65,7 +65,6 @@ class _ProfileView extends StatelessWidget {
                       context,
                       AppRoute.updateProfileScreen,
                     );
-                    // The name or avatar may have changed while we were away.
                     if (context.mounted) {
                       context.read<ProfileCubit>().loadProfile();
                     }
