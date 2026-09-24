@@ -10,6 +10,10 @@ import 'package:movies_app/features/movies/domain/usecases/get_movie_details_use
 import 'package:movies_app/features/movies/domain/usecases/get_movie_suggestions_usecase.dart';
 import 'package:movies_app/features/movies/presentation/bloc/movie_details_cubit.dart';
 import 'package:movies_app/features/movies/presentation/pages/movie_details_screen.dart';
+import 'package:movies_app/features/profile/domain/repositories/user_library_repository.dart';
+import 'package:movies_app/features/profile/domain/usecases/is_in_watchlist_usecase.dart';
+import 'package:movies_app/features/profile/domain/usecases/record_history_usecase.dart';
+import 'package:movies_app/features/profile/domain/usecases/toggle_watchlist_usecase.dart';
 
 /// Holds both calls open so the screen can be inspected mid-load.
 class _PendingRepository implements MoviesRepository {
@@ -28,15 +32,36 @@ class _PendingRepository implements MoviesRepository {
       suggestionsCompleter.future;
 }
 
+class _EmptyUserLibraryRepository implements UserLibraryRepository {
+  @override
+  Stream<List<Movie>> watchWatchlist() => const Stream.empty();
+
+  @override
+  Stream<List<Movie>> watchHistory() => const Stream.empty();
+
+  @override
+  Future<bool> isInWatchlist(int movieId) async => false;
+
+  @override
+  Future<bool> toggleWatchlist(Movie movie) async => true;
+
+  @override
+  Future<void> recordInHistory(Movie movie) async {}
+}
+
 void main() {
   late _PendingRepository repository;
 
   setUp(() {
     repository = _PendingRepository();
+    final library = _EmptyUserLibraryRepository();
     di.sl.registerFactoryParam<MovieDetailsCubit, Movie, void>(
       (initialMovie, _) => MovieDetailsCubit(
         GetMovieDetailsUseCase(repository),
         GetMovieSuggestionsUseCase(repository),
+        IsInWatchlistUseCase(library),
+        ToggleWatchlistUseCase(library),
+        RecordHistoryUseCase(library),
         initialMovie: initialMovie,
       ),
     );

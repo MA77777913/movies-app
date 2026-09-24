@@ -46,6 +46,10 @@ class AuthRemoteDataSource {
     await _firebaseAuth.sendPasswordResetEmail(email: email);
   }
 
+  Future<void> signOut() async {
+    await _firebaseAuth.signOut();
+  }
+
   Future<void> updateProfile({
     required String name,
     required String phone,

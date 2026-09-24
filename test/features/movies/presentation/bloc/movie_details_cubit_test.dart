@@ -6,6 +6,41 @@ import 'package:movies_app/features/movies/domain/usecases/get_movie_details_use
 import 'package:movies_app/features/movies/domain/usecases/get_movie_suggestions_usecase.dart';
 import 'package:movies_app/features/movies/presentation/bloc/movie_details_cubit.dart';
 import 'package:movies_app/features/movies/presentation/bloc/movie_details_state.dart';
+import 'package:movies_app/features/profile/domain/repositories/user_library_repository.dart';
+import 'package:movies_app/features/profile/domain/usecases/is_in_watchlist_usecase.dart';
+import 'package:movies_app/features/profile/domain/usecases/record_history_usecase.dart';
+import 'package:movies_app/features/profile/domain/usecases/toggle_watchlist_usecase.dart';
+
+class _FakeUserLibraryRepository implements UserLibraryRepository {
+  bool saved = false;
+  Object? failure;
+  final recordedHistory = <Movie>[];
+
+  @override
+  Stream<List<Movie>> watchWatchlist() => const Stream.empty();
+
+  @override
+  Stream<List<Movie>> watchHistory() => const Stream.empty();
+
+  @override
+  Future<bool> isInWatchlist(int movieId) async {
+    if (failure != null) throw failure!;
+    return saved;
+  }
+
+  @override
+  Future<bool> toggleWatchlist(Movie movie) async {
+    if (failure != null) throw failure!;
+    saved = !saved;
+    return saved;
+  }
+
+  @override
+  Future<void> recordInHistory(Movie movie) async {
+    if (failure != null) throw failure!;
+    recordedHistory.add(movie);
+  }
+}
 
 class _FakeMoviesRepository implements MoviesRepository {
   MovieDetails? detailsToReturn;
@@ -33,15 +68,20 @@ Movie _initialMovie() => Movie(id: 78513, title: 'A Modest Killing');
 
 void main() {
   late _FakeMoviesRepository repository;
+  late _FakeUserLibraryRepository library;
 
   setUp(() {
     repository = _FakeMoviesRepository();
+    library = _FakeUserLibraryRepository();
   });
 
   MovieDetailsCubit buildCubit() {
     return MovieDetailsCubit(
       GetMovieDetailsUseCase(repository),
       GetMovieSuggestionsUseCase(repository),
+      IsInWatchlistUseCase(library),
+      ToggleWatchlistUseCase(library),
+      RecordHistoryUseCase(library),
       initialMovie: _initialMovie(),
     );
   }
@@ -67,6 +107,50 @@ void main() {
     expect(cubit.state.status, MovieDetailsStatus.loaded);
     expect(cubit.state.details?.likeCount, 1);
     expect(cubit.state.suggestions.single.title, 'Killing Jesus');
+  });
+
+  test('loadDetails records the visit in history and reflects watch list state', () async {
+    repository.detailsToReturn = MovieDetails(id: 78513, title: 'A Modest Killing');
+    library.saved = true;
+
+    final cubit = buildCubit();
+    await cubit.loadDetails();
+
+    expect(library.recordedHistory.single.id, 78513);
+    expect(cubit.state.isInWatchlist, isTrue);
+  });
+
+  test('a failing library leaves the movie data intact', () async {
+    repository.detailsToReturn = MovieDetails(id: 78513, title: 'A Modest Killing');
+    library.failure = Exception('firestore down');
+
+    final cubit = buildCubit();
+    await cubit.loadDetails();
+
+    // The details still loaded; only the watch list flag is unavailable.
+    expect(cubit.state.status, MovieDetailsStatus.loaded);
+    expect(cubit.state.isInWatchlist, isFalse);
+  });
+
+  test('toggleWatchlist flips the flag and persists it', () async {
+    final cubit = buildCubit();
+
+    await cubit.toggleWatchlist();
+    expect(cubit.state.isInWatchlist, isTrue);
+    expect(library.saved, isTrue);
+
+    await cubit.toggleWatchlist();
+    expect(cubit.state.isInWatchlist, isFalse);
+    expect(library.saved, isFalse);
+  });
+
+  test('toggleWatchlist rolls back when the write fails', () async {
+    library.failure = Exception('offline');
+
+    final cubit = buildCubit();
+    await cubit.toggleWatchlist();
+
+    expect(cubit.state.isInWatchlist, isFalse);
   });
 
   test('loadDetails emits error when the details fetch fails, preserving the initial movie', () async {

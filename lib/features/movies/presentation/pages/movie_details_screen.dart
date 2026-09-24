@@ -89,9 +89,18 @@ class _MovieDetailsView extends StatelessWidget {
                                     onPressed: () => Navigator.pop(context),
                                   ),
                                   IconButton(
-                                    icon: const Icon(Icons.bookmark,
-                                        color: AppColor.white, size: 28),
-                                    onPressed: () {},
+                                    icon: Icon(
+                                      state.isInWatchlist
+                                          ? Icons.bookmark
+                                          : Icons.bookmark_border,
+                                      color: state.isInWatchlist
+                                          ? AppColor.yellow
+                                          : AppColor.white,
+                                      size: 28,
+                                    ),
+                                    onPressed: () => context
+                                        .read<MovieDetailsCubit>()
+                                        .toggleWatchlist(),
                                   ),
                                 ],
                               ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../browse/presentation/pages/browse_page.dart';
 import '../../../search/presentation/pages/search_page.dart';
 import 'home_page.dart';
+import '../../../profile/presentation/pages/profile_tab.dart';
 import '../widgets/custom_bottom_navigation_bar.dart';
 
 class MainPage extends StatefulWidget {

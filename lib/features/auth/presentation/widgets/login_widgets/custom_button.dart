@@ -9,6 +9,7 @@ class CustomButton extends StatelessWidget {
   final Color textColor;
   final Color? borderColor;
   final isNormanStyle;
+  final IconData? icon;
 
   const CustomButton({
     super.key,
@@ -17,7 +18,8 @@ class CustomButton extends StatelessWidget {
     this.backgroundColor = AppColor.yellow,
     this.textColor = Colors.black,
     this.borderColor,
-    this.isNormanStyle = false
+    this.isNormanStyle = false,
+    this.icon,
   });
 
   @override
@@ -35,13 +37,26 @@ class CustomButton extends StatelessWidget {
                 ? BorderSide(color: borderColor!, width: 2)
                 : BorderSide.none,
           ),
-          elevation: 0, // Removes shadow to keep the outline clean
+          elevation: 0,
         ),
-        child: Text(
-          text,
-          style: !isNormanStyle ? AppTextStyle.mainBtnTextStyle.copyWith(
-            color: textColor,
-          ) : AppTextStyle.normalTextStyle.copyWith(color: textColor)
+        child: Builder(
+          builder: (context) {
+            final label = Text(
+              text,
+              style: !isNormanStyle
+                  ? AppTextStyle.mainBtnTextStyle.copyWith(color: textColor)
+                  : AppTextStyle.normalTextStyle.copyWith(color: textColor),
+            );
+            if (icon == null) return label;
+            return Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                label,
+                const SizedBox(width: 8),
+                Icon(icon, color: textColor, size: 22),
+              ],
+            );
+          },
         ),
       ),
     );

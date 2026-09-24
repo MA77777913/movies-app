@@ -35,6 +35,11 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  Future<void> signOut() {
+    return _remoteDataSource.signOut();
+  }
+
+  @override
   Future<void> updateProfile({
     required String name,
     required String phone,
