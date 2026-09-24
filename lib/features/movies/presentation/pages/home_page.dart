@@ -6,7 +6,7 @@ import '../../domain/entities/movie.dart';
 import '../bloc/movies_cubit.dart';
 import '../bloc/movies_state.dart';
 import '../widgets/featured_carousel.dart';
-import '../widgets/rating_badge.dart';
+import '../../../../core/widgets/rating_badge.dart';
 import 'movie_details_screen.dart';
 
 class HomePage extends StatelessWidget {

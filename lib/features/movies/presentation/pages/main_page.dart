@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../../browse/presentation/pages/browse_page.dart';
+import '../../../search/presentation/pages/search_page.dart';
 import 'home_page.dart';
 import '../../../profile/presentation/pages/profile_tab.dart';
 import '../widgets/custom_bottom_navigation_bar.dart';
@@ -15,25 +17,17 @@ class _MainPageState extends State<MainPage> {
 
   final List<Widget> _pages = [
     const HomePage(),
+    const SearchPage(),
+    const BrowsePage(),
     const Center(
       child: Text(
-        'Search Screen',
+        'Profile Screen',
         style: TextStyle(
           color: Colors.white,
           fontSize: 24,
         ),
       ),
     ),
-    const Center(
-      child: Text(
-        'Browse Screen',
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 24,
-        ),
-      ),
-    ),
-    const ProfileTab(),
   ];
 
   @override

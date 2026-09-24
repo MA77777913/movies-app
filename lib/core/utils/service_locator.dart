@@ -10,6 +10,7 @@ import '../../features/movies/domain/repositories/movies_repository.dart';
 import '../../features/movies/domain/usecases/get_movie_details_usecase.dart';
 import '../../features/movies/domain/usecases/get_movie_suggestions_usecase.dart';
 import '../../features/movies/domain/usecases/get_movies_usecase.dart';
+import '../../features/browse/presentation/cubit/browse_cubit.dart';
 import '../../features/movies/presentation/bloc/movie_details_cubit.dart';
 import '../../features/movies/presentation/bloc/movies_cubit.dart';
 import '../../features/profile/data/datasources/user_library_remote_data_source.dart';
@@ -26,6 +27,7 @@ final sl = GetIt.instance;
 
 Future<void> init() async {
   sl.registerFactory(() => MoviesCubit(sl()));
+  sl.registerFactory(() => BrowseCubit(sl()));
 
   sl.registerFactory(() => ProfileCubit(sl(), sl(), sl()));
 

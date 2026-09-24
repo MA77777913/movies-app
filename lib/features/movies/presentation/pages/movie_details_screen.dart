@@ -56,7 +56,7 @@ class _MovieDetailsView extends StatelessWidget {
                         Image.network(
                           posterImage,
                           fit: BoxFit.cover,
-                          errorBuilder: (_, __, ___) => Container(color: AppColor.gray),
+                          errorBuilder: (context, error, stackTrace) => Container(color: AppColor.gray),
                         ),
 
                       Container(
