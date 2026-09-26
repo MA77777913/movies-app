@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../../../core/utils/app_assets.dart';
 import '../../../../core/utils/app_color.dart';
-import '../../../../core/utils/app_text_style.dart';
 import '../../../auth/domain/entities/user_entity.dart';
-import '../../../auth/presentation/widgets/login_widgets/custom_button.dart';
 
-/// Preliminary design: avatar and name on the left, the two counters beside
-/// them, then the Edit Profile / Exit buttons.
 class ProfileHeader extends StatelessWidget {
   final UserEntity? user;
   final int watchlistCount;
@@ -33,69 +29,111 @@ class ProfileHeader extends StatelessWidget {
 
     return Container(
       color: AppColor.dark,
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 24, 16, 8),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    children: [
-                      Container(
-                        height: 118,
-                        width: 118,
-                        child: CircleAvatar(
-                          backgroundColor: Colors.transparent,
-                          backgroundImage: AssetImage(avatar),
-                        ),
+      padding: const EdgeInsets.fromLTRB(16, 20, 16, 16),
+      child: Column(
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                flex: 4,
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 92,
+                      width: 92,
+                      child: CircleAvatar(
+                        backgroundColor: Colors.transparent,
+                        backgroundImage: AssetImage(avatar),
                       ),
-                      const SizedBox(height: 12),
-                      Text(
-                        user?.name ?? '',
-                        textAlign: TextAlign.center,
-                        style: AppTextStyle.titleMovieDetails.copyWith(fontSize: 20),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      user?.name ?? 'John Safwat',
+                      textAlign: TextAlign.center,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                Expanded(
-                  child: _Counter(count: watchlistCount, label: 'Wish List'),
-                ),
-                Expanded(
-                  child: _Counter(count: historyCount, label: 'History'),
-                ),
-              ],
-            ),
-            const SizedBox(height: 24),
-            Row(
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: CustomButton(
-                    isNormanStyle: true,
+              ),
+              Expanded(
+                flex: 3,
+                child: _Counter(count: watchlistCount, label: 'Wish List'),
+              ),
+              Expanded(
+                flex: 3,
+                child: _Counter(count: historyCount, label: 'History'),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          Row(
+            children: [
+              Expanded(
+                flex: 3,
+                child: SizedBox(
+                  height: 48,
+                  child: ElevatedButton(
                     onPressed: onEditProfile,
-                    text: 'Edit Profile',
-                    backgroundColor: AppColor.yellow,
-                    textColor: AppColor.black,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColor.yellow,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                    ),
+                    child: const Text(
+                      'Edit Profile',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
-                const SizedBox(width: 12),
-                Expanded(
-                  flex: 1,
-                  child: CustomButton(
-                    isNormanStyle: true,
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                flex: 2,
+                child: SizedBox(
+                  height: 48,
+                  child: ElevatedButton(
                     onPressed: isSigningOut ? () {} : onExit,
-                    text: 'Exit',
-                    icon: Icons.logout,
-                    backgroundColor: AppColor.red,
-                    textColor: AppColor.white,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColor.red,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Text(
+                          'Exit',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(width: 6),
+                        Icon(Icons.exit_to_app_rounded, color: Colors.white, size: 20),
+                      ],
+                    ),
                   ),
                 ),
-              ],
-            ),
-          ],
-        ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -110,16 +148,25 @@ class _Counter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
           count.toString(),
-          style: AppTextStyle.titleMovieDetails.copyWith(fontSize: 36),
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 28,
+            fontWeight: FontWeight.bold,
+          ),
         ),
-        const SizedBox(height: 6),
+        const SizedBox(height: 4),
         Text(
           label,
           textAlign: TextAlign.center,
-          style: AppTextStyle.normalTextStyle.copyWith(fontSize: 24),
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ],
     );

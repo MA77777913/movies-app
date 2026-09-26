@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import '../../../../core/utils/app_assets.dart';
 import '../../../../core/utils/app_color.dart';
+import '../../../../core/widgets/rating_badge.dart';
 import '../../../movies/domain/entities/movie.dart';
 import '../../../movies/presentation/pages/movie_details_screen.dart';
-import '../../../movies/presentation/widgets/rating_badge.dart';
 
 class ProfileMoviesGrid extends StatelessWidget {
   final List<Movie> movies;
@@ -53,7 +53,8 @@ class ProfileMoviesGrid extends StatelessWidget {
                   Image.network(
                     movie.mediumCoverImage ?? '',
                     fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) => Container(color: AppColor.gray),
+                    errorBuilder: (context, error, stackTrace) =>
+                        Container(color: AppColor.gray),
                   ),
                   Positioned(
                     top: 6,

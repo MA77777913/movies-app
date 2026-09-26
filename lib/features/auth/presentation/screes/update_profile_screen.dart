@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movies_app/core/utils/app_assets.dart';
 import 'package:movies_app/core/utils/app_color.dart';
+import 'package:movies_app/core/utils/app_route.dart';
 import 'package:movies_app/core/utils/app_text_style.dart';
 import 'package:movies_app/features/auth/presentation/cubit/update_profile/update_profile_cubit.dart';
 import 'package:movies_app/features/auth/presentation/cubit/update_profile/update_profile_state.dart';
 
-import '../../../../core/utils/app_assets.dart';
 import '../widgets/login_widgets/custom_button.dart';
 import '../widgets/login_widgets/custom_text_field.dart';
 
@@ -40,9 +41,17 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     return Scaffold(
       backgroundColor: AppColor.black,
       appBar: AppBar(
-        title: Text("Pick Avatar", style: AppTextStyle.appBarTxtStyle),
         backgroundColor: Colors.transparent,
+        elevation: 0,
         centerTitle: true,
+        title: Text(
+          "Pick Avatar",
+          style: AppTextStyle.appBarTxtStyle.copyWith(
+            color: AppColor.yellow,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: AppColor.yellow),
           onPressed: () => Navigator.pop(context),
@@ -50,12 +59,13 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
       ),
       body: BlocConsumer<UpdateProfileCubit, UpdateProfileState>(
         listener: (context, state) {
-          // One-time side effects: pre-fill the form the moment the profile loads
           if (state.status == UpdateProfileStatus.loaded && state.user != null) {
             _nameController.text = state.user!.name;
             _phoneController.text = state.user!.phone;
             setState(() {
-              _selectedAvatar = state.user!.avatar.isNotEmpty ? state.user!.avatar : avatars.first;
+              _selectedAvatar = state.user!.avatar.isNotEmpty
+                  ? state.user!.avatar
+                  : avatars.first;
             });
           }
           if (state.status == UpdateProfileStatus.failure) {
@@ -65,99 +75,105 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
           }
           if (state.status == UpdateProfileStatus.success) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Profile updated')),
+              const SnackBar(content: Text('Profile updated successfully')),
             );
+            Navigator.pop(context);
           }
         },
         builder: (context, state) {
-          if (state.status == UpdateProfileStatus.loading || state.status == UpdateProfileStatus.initial) {
-            return const Center(child: CircularProgressIndicator(color: AppColor.yellow));
+          if (state.status == UpdateProfileStatus.loading ||
+              state.status == UpdateProfileStatus.initial) {
+            return const Center(
+              child: CircularProgressIndicator(color: AppColor.yellow),
+            );
           }
 
           final isSubmitting = state.status == UpdateProfileStatus.submitting;
 
-          return Stack(
-            children: [
-              Column(
-                children: [
-                  const SizedBox(height: 30),
-                  GestureDetector(
-                    onTap: _showAvatarBottomSheet,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 12, bottom: 12),
-                      child: Center(
-                        child: SizedBox(
-                          height: 150,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(color: AppColor.yellow, width: 2),
-                            ),
-                            child: CircleAvatar(
-                              radius: 60,
-                              backgroundColor: Colors.transparent,
-                              backgroundImage: AssetImage(_selectedAvatar),
+          return SafeArea(
+            child: Stack(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 20),
+                      GestureDetector(
+                        onTap: _showAvatarBottomSheet,
+                        child: CircleAvatar(
+                          radius: 70,
+                          backgroundColor: Colors.transparent,
+                          backgroundImage: AssetImage(_selectedAvatar),
+                        ),
+                      ),
+                      const SizedBox(height: 32),
+                      CustomTextField(
+                        controller: _nameController,
+                        hintText: "John Safwat",
+                        prefixIcon: Icons.person,
+                      ),
+                      const SizedBox(height: 16),
+                      CustomTextField(
+                        controller: _phoneController,
+                        hintText: "01200000000",
+                        prefixIcon: Icons.phone,
+                      ),
+                      const SizedBox(height: 24),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              AppRoute.forgetPasswordRoute,
+                            );
+                          },
+                          child: const Text(
+                            "Reset Password",
+                            style: TextStyle(
+                              color: AppColor.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w400,
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: CustomTextField(controller: _nameController, hintText: "Name", prefixIcon: Icons.person),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: CustomTextField(controller: _phoneController, hintText: "Phone", prefixIcon: Icons.phone),
-                  ),
-                  const SizedBox(height: 12),
-                  Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "Reset Password",
-                        style: AppTextStyle.appBarTxtStyle.copyWith(color: AppColor.white, fontSize: 20),
+                      const Spacer(),
+                      CustomButton(
+                        isNormanStyle: true,
+                        onPressed: () {},
+                        text: "Delete Account",
+                        backgroundColor: AppColor.red,
+                        textColor: AppColor.white,
                       ),
-                    ),
+                      const SizedBox(height: 12),
+                      CustomButton(
+                        isNormanStyle: true,
+                        onPressed: () {
+                          if (isSubmitting) return;
+                          context.read<UpdateProfileCubit>().updateProfile(
+                                name: _nameController.text.trim(),
+                                phone: _phoneController.text.trim(),
+                                avatar: _selectedAvatar,
+                              );
+                        },
+                        text: "Update Data",
+                        backgroundColor: AppColor.yellow,
+                        textColor: AppColor.black,
+                      ),
+                      const SizedBox(height: 16),
+                    ],
                   ),
-                  const Spacer(),
-                  Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: CustomButton(
-                      isNormanStyle: true,
-                      onPressed: () {}, // Delete Account isn't part of this task's scope yet
-                      text: "Delete Account",
-                      backgroundColor: AppColor.red,
-                      textColor: AppColor.white,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: CustomButton(
-                      isNormanStyle: true,
-                      onPressed: () {
-                        if (isSubmitting) return;
-                        context.read<UpdateProfileCubit>().updateProfile(
-                          name: _nameController.text.trim(),
-                          phone: _phoneController.text.trim(),
-                          avatar: _selectedAvatar,
-                        );
-                      },
-                      text: "Update Data",
-                      backgroundColor: AppColor.yellow,
-                      textColor: AppColor.black,
-                    ),
-                  ),
-                ],
-              ),
-              if (isSubmitting)
-                Container(
-                  color: Colors.black45,
-                  child: const Center(child: CircularProgressIndicator(color: AppColor.yellow)),
                 ),
-            ],
+                if (isSubmitting)
+                  Container(
+                    color: Colors.black45,
+                    child: const Center(
+                      child: CircularProgressIndicator(color: AppColor.yellow),
+                    ),
+                  ),
+              ],
+            ),
           );
         },
       ),
@@ -173,7 +189,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
           padding: const EdgeInsets.all(16),
           margin: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: AppColor.gray, // Dark modal container color
+            color: AppColor.gray,
             borderRadius: BorderRadius.circular(20),
           ),
           child: GridView.builder(

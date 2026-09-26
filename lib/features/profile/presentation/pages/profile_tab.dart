@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/utils/app_color.dart';
 import '../../../../core/utils/app_route.dart';
-import '../../../../core/utils/app_text_style.dart';
 import '../../../../core/utils/service_locator.dart' as di;
 import '../cubit/profile_cubit.dart';
 import '../cubit/profile_state.dart';
@@ -52,55 +51,63 @@ class _ProfileView extends StatelessWidget {
 
         return DefaultTabController(
           length: 2,
-          child: SafeArea(
-            child: Column(
-              children: [
-                ProfileHeader(
-                  user: state.user,
-                  watchlistCount: state.watchlistCount,
-                  historyCount: state.historyCount,
-                  isSigningOut: state.signOutStatus == SignOutStatus.inProgress,
-                  onEditProfile: () async {
-                    await Navigator.pushNamed(
-                      context,
-                      AppRoute.updateProfileScreen,
-                    );
-                    if (context.mounted) {
-                      context.read<ProfileCubit>().loadProfile();
-                    }
-                  },
-                  onExit: () => context.read<ProfileCubit>().signOut(),
-                ),
-                ColoredBox(
-                  color: AppColor.dark,
-                  child: TabBar(
-                    indicatorColor: AppColor.yellow,
-                    // Run the indicator the full width of the tab.
-                    indicatorSize: TabBarIndicatorSize.tab,
-                    labelColor: AppColor.white,
-                    unselectedLabelColor: AppColor.white,
-                    labelStyle: AppTextStyle.normalTextStyle,
-                    tabs: const [
-                      Tab(
-                        icon: Icon(Icons.list, color: AppColor.yellow),
-                        text: 'Watch List',
-                      ),
-                      Tab(
-                        icon: Icon(Icons.folder, color: AppColor.yellow),
-                        text: 'History',
-                      ),
-                    ],
+          child: Scaffold(
+            backgroundColor: AppColor.dark,
+            body: SafeArea(
+              child: Column(
+                children: [
+                  ProfileHeader(
+                    user: state.user,
+                    watchlistCount: state.watchlistCount,
+                    historyCount: state.historyCount,
+                    isSigningOut: state.signOutStatus == SignOutStatus.inProgress,
+                    onEditProfile: () async {
+                      await Navigator.pushNamed(
+                        context,
+                        AppRoute.updateProfileScreen,
+                      );
+                      if (context.mounted) {
+                        context.read<ProfileCubit>().loadProfile();
+                      }
+                    },
+                    onExit: () => context.read<ProfileCubit>().signOut(),
                   ),
-                ),
-                Expanded(
-                  child: TabBarView(
-                    children: [
-                      ProfileMoviesGrid(movies: state.watchlist),
-                      ProfileMoviesGrid(movies: state.history),
-                    ],
+                  Container(
+                    color: AppColor.dark,
+                    child: const TabBar(
+                      indicatorColor: AppColor.yellow,
+                      indicatorWeight: 3,
+                      indicatorSize: TabBarIndicatorSize.tab,
+                      labelColor: AppColor.white,
+                      unselectedLabelColor: AppColor.white,
+                      labelStyle: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      tabs: [
+                        Tab(
+                          icon: Icon(Icons.format_list_bulleted_rounded,
+                              color: AppColor.yellow, size: 26),
+                          text: 'Watch List',
+                        ),
+                        Tab(
+                          icon: Icon(Icons.folder_rounded,
+                              color: AppColor.yellow, size: 26),
+                          text: 'History',
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                  Expanded(
+                    child: TabBarView(
+                      children: [
+                        ProfileMoviesGrid(movies: state.watchlist),
+                        ProfileMoviesGrid(movies: state.history),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         );

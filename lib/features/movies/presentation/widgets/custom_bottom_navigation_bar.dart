@@ -23,11 +23,11 @@ class CustomBottomNavigationBar extends StatelessWidget {
     return SafeArea(
       top: false,
       child: Container(
-        margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+        margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
         height: 70,
         decoration: BoxDecoration(
           color: const Color(0xFF282A28),
-          borderRadius: BorderRadius.circular(30),
+          borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: 0.4),

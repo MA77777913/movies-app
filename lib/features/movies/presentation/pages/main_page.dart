@@ -19,15 +19,8 @@ class _MainPageState extends State<MainPage> {
     const HomePage(),
     const SearchPage(),
     const BrowsePage(),
-    const Center(
-      child: Text(
-        'Profile Screen',
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 24,
-        ),
-      ),
-    ),
+    const ProfileTab(),
+
   ];
 
   @override
